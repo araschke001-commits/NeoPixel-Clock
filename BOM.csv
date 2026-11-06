@@ -1,5 +1,5 @@
 Item,Qty,Supplier,Cost/item,Total Cost,link
-PCB,1,JLCPCB,$0.00,$0.00,https://cart.jlcpcb.com/shopcart/cart
+PCB,1,JLCPCB,$16.80,$16.80,https://cart.jlcpcb.com/shopcart/cart
 WS2812B RGB LED's,50,AliExpress,$0.05,$2.50,https://www.aliexpress.us/item/3256811985880403.html
 "2.42"" 128X64 OLED",1,AliExpress,$11.93,$11.93,https://www.aliexpress.us/item/3256809104373869.html
 XIAO ESP32C3,1,DigiKey,$5.25,$5.25,https://www.digikey.com/en/products/detail/seeed-technology-co-ltd/113991054/16652880
