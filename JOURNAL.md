@@ -10,7 +10,7 @@
 
 | Week | Tier | Hours logged | Entries |
 | --- | --- | --- | --- |
-| Week 5 | Tier 2 | 12.95h | 6 |
+| Week 5 | Tier 2 | 13.6h | 6 |
 
 ## Contents
 
@@ -69,11 +69,11 @@ Third, I made an assembly in Onshape for the PCB. I exported the PCB from EasyED
 
 ### 2026-11-08: # Finishing PCB and Assemblies
 
-**1.58h**
+**2.23h**
 
 # Finishing PCB and Assemblies
 
-In this session, I finished the PCB, finished the PCB assembly in Onshape, and I added a full assembly with all of the parts. Then, in addition to the timelapse, I added holes to zip tie the cable to the PCB to hold it in place if I choose to use them.
+In this session, I finished the PCB, finished the PCB assembly in Onshape, and I added a full assembly with all of the parts. Then, in addition to the timelapse, I added holes to zip tie the cable to the PCB to hold it in place if I choose to use them. And for the second, shorter timelapse, I moved the Supermini so the USB C cable wouldn't interfere with the PCB.
 
 ## First timelapse
 
@@ -91,4 +91,10 @@ The holes:
 
 ![Screenshot 2026-11-08 142830](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/67ee66dd37a8d5cdff9d728d2e75bf4ec301dfd5bc386f37a5ebc8a7e830401d.png)
 
+## Second timelapse
+
+I moved the SuperMini to the bottom edge of the PCB because I realized that the cable might interfere with the PCB when trying to plug it in. Then I redid all of the fastens and mate connectors in Onshape. I gave up on having all of the bottom copper being there and just had the ones I needed to fasten the Supermini onto the PCB.
+
 [Timelapse](https://lookout.hackclub.com/api/media/8e5f8074-97af-48c0-bd98-7cfc89226539/video.mp4)
+
+[Timelapse](https://lookout.hackclub.com/api/media/2b6c2b0a-c20a-40a1-b4bd-3f301cc79122/video.mp4)
