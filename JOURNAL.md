@@ -10,7 +10,7 @@
 
 | Week | Tier | Hours logged | Entries |
 | --- | --- | --- | --- |
-| Week 5 | Tier 2 | 12.45h | 6 |
+| Week 5 | Tier 2 | 12.95h | 6 |
 
 ## Contents
 
@@ -19,7 +19,7 @@
 3. [2026-11-05: In this session, I finished replacing and rewiring the schematic after adding 60 LED's instead of 36. Then I placed all of the LED's in a circle. Afterwards, I changed the capacitors to the ones match](#2026-11-05-in-this-session-i-finished-replacing-and-rewiring)
 4. [2026-11-07: For this session, I was mainly swapping parts to fit within the budget, but I also placed the OLED pin headers on the PCB, which I did first.](#2026-11-07-for-this-session-i-was-mainly-swapping-parts-to-f)
 5. [2026-11-08: First, I had to replace the PCB with the new components. This was fairly simple as I just had to place the components similarly to how I had done before.](#2026-11-08-first-i-had-to-replace-the-pcb-with-the-new-compo)
-6. [2026-11-08: In this session, I finished the PCB, finished the PCB assembly in Onshape, and I added a full assembly with all of the parts.](#2026-11-08-in-this-session-i-finished-the-pcb-finished-the-p)
+6. [2026-11-08: # Finishing PCB and Assemblies](#2026-11-08-finishing-pcb-and-assemblies)
 
 ## Design
 
@@ -67,16 +67,28 @@ Third, I made an assembly in Onshape for the PCB. I exported the PCB from EasyED
 
 [Timelapse](https://lookout.hackclub.com/api/media/5a167e3b-7a5f-40b6-9f8c-16e8b212a660/video.mp4)
 
-### 2026-11-08: In this session, I finished the PCB, finished the PCB assembly in Onshape, and I added a full assembly with all of the parts.
+### 2026-11-08: # Finishing PCB and Assemblies
 
-**1.08h**
+**1.58h**
 
-In this session, I finished the PCB, finished the PCB assembly in Onshape, and I added a full assembly with all of the parts.
+# Finishing PCB and Assemblies
 
-First, I finished the PCB by moving the Supermini to the other side and adding the mounting holes. I had to move the Supermini to the other side so the cable didn't get in the way of the LED's. I was debating whether or not to move the other components to the other side (except the OLED obviously), but I chose not to because the 680uF capacitor wouldn't fit without a larger standoff and because I thought it added to the look of the PCB.
+In this session, I finished the PCB, finished the PCB assembly in Onshape, and I added a full assembly with all of the parts. Then, in addition to the timelapse, I added holes to zip tie the cable to the PCB to hold it in place if I choose to use them.
 
-Second, I finished the PCB assembly in Onshape with the newly finished PCB. The copper pads for the Supermini were now on the other side, and when I tried to extrude the copper pads so I could select them, it wouldn't work. I then had to insert almost all of the copper surfaces on the bottom side and fasten them so they would work. Then I fastened the Supermini to it. Then I imported the OLED and fastened that to the PCB.
+## First timelapse
 
-Third, I made a full assembly with all of the parts. I imported the OLED stabilizer part I made in Week 4 since I was using the same display and also the M2x10mm standoffs that I downloaded from GrabCAD. Then I inserted those and the PCB Assembly into the full assembly.
+- First, I finished the PCB by moving the Supermini to the other side and adding the mounting holes. I had to move the Supermini to the other side so the cable didn't get in the way of the LED's. I was debating whether or not to move the other components to the other side (except the OLED obviously), but I chose not to because the 680uF capacitor wouldn't fit without a larger standoff and because I thought it added to the look of the PCB.
+- Second, I finished the PCB assembly in Onshape with the newly finished PCB. The copper pads for the Supermini were now on the other side, and when I tried to extrude the copper pads so I could select them, it wouldn't work. I then had to insert almost all of the copper surfaces on the bottom side and fasten them so they would work. Then I fastened the Supermini to it. Then I imported the OLED and fastened that to the PCB.
+- Third, I made a full assembly with all of the parts. I imported the OLED stabilizer part I made in Week 4 since I was using the same display and also the M2x10mm standoffs that I downloaded from GrabCAD. Then I inserted those and the PCB Assembly into the full assembly.
+
+## In between timelapses
+
+- After that, I realized that I might want to keep the cable in place on the back of the PCB. The cable is designed to go up the back of the PCB and plug into the USB C port on the ESP32-C3 Supermini. I made two holes so a zip tie could loop through them and hold the cable in place.
+
+The holes:
+
+![Screenshot 2026-11-08 142815](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/59fc5486b80901dff18634d1f8cc5f03bd220fcb7937c3804cbe97ce6658fbe7.png)
+
+![Screenshot 2026-11-08 142830](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/67ee66dd37a8d5cdff9d728d2e75bf4ec301dfd5bc386f37a5ebc8a7e830401d.png)
 
 [Timelapse](https://lookout.hackclub.com/api/media/8e5f8074-97af-48c0-bd98-7cfc89226539/video.mp4)
