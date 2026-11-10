@@ -73,7 +73,6 @@ def wifiConnect(ssid, password, attempts=3):
                         wlan.disconnect()
                     wlan.active(False)
 
-        
 
 # Set up wifi
 wlan = network.WLAN(network.STA_IF)
