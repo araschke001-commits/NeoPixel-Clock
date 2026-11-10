@@ -4,6 +4,18 @@ import network, ntptime, time, neopixel, sys, colorsys
 
 ### Setup ###
 
+# Shuts everything down unless you choose to exclude something
+def shutDown(isWifi=True, isDisplay=True):
+    # Turn off wifi fully if it exists
+    if wlan and isWifi:
+        if wlan.isconnected():
+            wlan.disconnect()
+        wlan.active(False)
+    
+    # Turn off the screen if it exists
+    if display and isDisplay:
+        display.poweroff()
+
 ## Network ##
 
 # Variables #
@@ -65,13 +77,7 @@ def wifiConnect(ssid, password, attempts=3):
 
             finally:
                 if wifiFailed:
-                    # Turn off the screen
-                    display.poweroff()
-
-                    # Turn off wifi fully
-                    if wlan.isconnected():
-                        wlan.disconnect()
-                    wlan.active(False)
+                    shutDown()
 
 
 # Set up wifi
@@ -82,17 +88,112 @@ wlan.active(True)
 wifiConnect(ssid, password)
 
 
-## Time ##
+## DST Functions ##
 
-UTC_OFFSET = -6 # CST
+# Helper function to find the day in the month of the nth sunday
+def nthSunday(year, month, n):
+    # Get weekday of 1st of month (0 = Monday, 6 = Sunday)
+    firstTick = time.mktime((year, month, 1, 0, 0, 0, 0, 0))
+    firstWeekday = time.localtime(firstTick)[6]
+
+    # Calculate days until the first sunday
+    daysToFirstSunday = (6 - firstWeekday) % 7
+
+    # Return the day of the month
+    return 1 + daysToFirstSunday + (n - 1) * 7
+
+# Returns True if the date is in DST and False if it is not (for the US)
+# US DST starts 2nd Sunday in March, ends 1st Sunday in November
+def isDst(year, month, day, hour):
+    # Calculate the transition days for the given year
+    startDay = nthSunday(year, 3, 2) # 2nd Sunday in March
+    endDay = nthSunday(year, 11, 1) # 1st Sunday in November
+
+    # Check if the date falls on DST
+    if month < 3 or month > 11:
+        return False
+    if month > 3 and month < 11:
+        return True
+    if month == 3:
+        return day > startDay or (day == startDay and hour >= 8)
+    if month == 11:
+        return day < endDay or (day == endDay and hour < 7)
+    return False
+
+
+## Time ##
 
 # Sync from NTP
 ntptime.settime()
 
-# Gets the local time based off of the UTC offset
+# Gets the hour offset from UTC, in either CST or CDT, depending on daylight savings
+def getUtcOffset():
+    utcTime = time.gmtime()
+    year, month, day, hour = utcTime[0], utcTime[1], utcTime[2], utcTime[3]
+
+    if isDst(year, month, day, hour):
+        return -5 # CDT
+    else:
+        return -6 # CST
+
+UTC_OFFSET = getUtcOffset()
+
+# Gets the local time based off of the UTC offset in the format (year, month, day, hour, minute, second, weekday, yearday)
 def getLocal():
     timestamp = time.time() + UTC_OFFSET * 3600
     return time.localtime(timestamp)
+
+# Gets the current date from the time module in the format (year, month, day)
+def getDate():
+    timestamp = getLocal()
+    year = timestamp[0]
+    month = timestamp[1]
+    day = timestamp[2]
+    return year, month, day
+
+# Gets the local time based off of the UTC offset with only the hour, minute, and second being returned
+def getTime():
+    current = getLocal()
+
+    # Return current hour, minute, second
+    return current[3], current[4], current[5]
+
+SYNC_INTERVAL = 60 # Syncs time every minute
+lastSync = 0 # Timestamp of last sync
+
+def timeReconnect():
+    global lastSync, SYNC_INTERVAL
+
+    timeFailed = False
+    now = time.time()
+
+    if now - lastSync > SYNC_INTERVAL:
+        for i in range(3):
+            try:
+                ntptime.settime()
+                lastSync = now
+
+            except:
+                if i < 2:
+                    print("Time reset failed, retrying...")
+                    centerText("Time Reset\nFailed", 63, 31, True)
+                    time.sleep(1)
+
+                else:
+                    timeFailed = True
+                    print("Time reset failed, quitting...")
+                    centerText("Time Reset\nFailed*", 63, 31, True)
+
+                    time.sleep(1)
+                    sys.exit(1)
+                    
+            else:
+                break
+
+            finally:
+                if timeFailed == True:
+                    shutDown()
+
 
 ## NeoPixels ##
 
@@ -166,6 +267,16 @@ def showSafe():
 
     leds.write()
 
+# Sets pixels just before specified led (going a certain length) in the color specified but dimmer
+def makeTrail(index, length, rgb):
+    
+    rgbVals = rgb
+    for i in range(index - 1, index - (2 + length), -1):
+        # Half all of the values in rgbVals
+        rgbVals = (rgbVals[0]/2, rgbVals[1]/2, rgbVals[2]/2)
+        
+        setPixel(i, rgbVals[0], rgbVals[1], rgbVals[2])
+
 
 ## OLED ##
 
@@ -224,6 +335,42 @@ time.sleep_ms(500)
 ### Main Loop ###
 
 while True:
-    ## Perform Functions ##
+    ## Network ##
+
+    # Try to reconnect to wifi if disconnected
+    wifiConnect(ssid, password)
+
+
+    ## Time ##
+
+    timeReconnect()
+
+    date = getDate()
+    shortTime = getTime()
+
+
+    ## NeoPixels ##
+
+    # Display hour led in yellowish white
+    setPixel(shortTime[0], 150, 130, 101)
+
+    # Display minute led in white
+    setPixel(shortTime[1], 150, 150, 150)
+
+    # Make a trail behind the minute led for 1 led in white
+    makeTrail(shortTime[1], 1, (150, 150, 150))
+
+    # Display second led in whitish blue
+    setPixel(shortTime[2], 130, 150, 170)
+
+    # Make a trail behind the second led for 3 leds in whitish blue
+    makeTrail(shortTime[2], 3, (130, 150, 170))
+
+    # ***** TODO: Fix led placement on PCB, Make mode for ms, make OLED code *****
+
+
+    ## OLED ##
+
+    current = getTime()
 
     time.sleep_ms(100)
