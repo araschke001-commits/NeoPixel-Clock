@@ -6,7 +6,7 @@
 > [!NOTE]
 > This devlog is mirrored from [Half Life](https://halflife.hackclub.com) ([open the project](https://halflife.hackclub.com/projects/iqxw10e5ikd5y10m4b8q866a)). Editing it here will not change the platform's copy, and the next sync overwrites this file.
 
-> A neopixel clock that has neopixels around it to tell the time and an OLED display to show the current date, with 3 switches to switch modes and time zones. It retrieves the date and time using the XIAO ESP32-C3 to get it using API keys over Wi-Fi. I will use micropython for the code.
+> A NeoPixel clock that has NeoPixels around it to tell the time and an OLED display to show the current date, with a switch to change modes. It retrieves the date and time using the XIAO ESP32-C3 to get it using Wi-Fi. I will use MicroPython for the code.
 
 | Week | Tier | Hours logged | Entries |
 | --- | --- | --- | --- |
