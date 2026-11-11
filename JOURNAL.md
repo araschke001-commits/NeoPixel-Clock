@@ -10,7 +10,7 @@
 
 | Week | Tier | Hours logged | Entries |
 | --- | --- | --- | --- |
-| Week 5 | Tier 2 | 17.97h | 9 |
+| Week 5 | Tier 2 | 20.63h | 9 |
 
 ## Contents
 
@@ -22,7 +22,7 @@
 6. [2026-11-08: # Finishing PCB and Assemblies](#2026-11-08-finishing-pcb-and-assemblies)
 7. [2026-11-08: In this session, I made some test programs and made the setup code for the main program.](#2026-11-08-in-this-session-i-made-some-test-programs-and-mad)
 8. [2026-11-10: In this session, I continued to work on the code, making the actual Date and Time Test AND...](#2026-11-10-in-this-session-i-continued-to-work-on-the-code-m)
-9. [2026-11-10: First, I had to add the switch to change the modes since I forgot about it before and it is necessary. I added it in the schematic and updated the PCB with the switch I found that was within budget. T](#2026-11-10-first-i-had-to-add-the-switch-to-change-the-modes)
+9. [2026-11-10: ## First Timelapse](#2026-11-10-first-timelapse)
 
 ## Design
 
@@ -146,12 +146,36 @@ Here are the images of my code:
 
 ![Screenshot from 2026-11-09 23-09-10](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/9c7f7fddc924dd99a3c14d5c56781268a3d68ffe167fd7af182043c4db3996ec.png)
 
-### 2026-11-10: First, I had to add the switch to change the modes since I forgot about it before and it is necessary. I added it in the schematic and updated the PCB with the switch I found that was within budget. T
+### 2026-11-10: ## First Timelapse
 
-**1.37h**
+**4.03h**
 
+## First Timelapse
 First, I had to add the switch to change the modes since I forgot about it before and it is necessary. I added it in the schematic and updated the PCB with the switch I found that was within budget. Then I updated the assembly, having to redo all of the board in the PCB Assembly.
 
 After that, I updated the PCB files in the repo, and then I made the README to meet the requirements, with the images and links to whatever I felt like linking to.
 
+## Second Timelapse
+Then I realized that I would need a keycap to go onto the switch, so I made it in Onshape based off of the model of the switch. I then downloaded the files for the keycap and assemblies and put them in the repo. Then I just updated the README and called it a day.
+
+## Third Timelapse
+I'm getting tired of this: I fix a problem that needs a timelapse, move onto the code, and then find another problem I have to fix with a timelapse. This time it was to fix the LED placement on the PCB. I saw it in my TODO I made in my code. I had to move the LED's over, redo the nets, and reupload the files to the repo.
+
+## Extra 45 mins
+After I fixed the LEDs, I realized that I had forgot to rename them. I tried to rename them all together, but that didn't work, so I had to do it manually.
+
+Finally, I decided to make ticks for my clock so time was easier to tell. I made silkscreen lines to do this.
+
+Pictures of PCB & Schematic:
+
+![PCB 3d Model](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/dbcd4f1959fdaeff1192c296abb3845cfe5e0facb01a5e0943ac9db7d4e490d1.png)
+
+![PCB](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/6e03cbb9fcbe1a4d98d86f9728c3be4dd2532a78544be6bb33444b324bbd1708.png)
+
+![Schematic - NeoPixel Ring](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/59afee29f349b5a11d348e31978e81c1ec218e6570ca86c0fc9a3579b2b8e90b.png)
+
 [Timelapse](https://lookout.hackclub.com/api/media/c0928712-0726-49e6-af7b-d35ca8fce67a/video.mp4)
+
+[Timelapse](https://lookout.hackclub.com/api/media/c7385285-aba2-4b1a-9c20-08559a5d1465/video.mp4)
+
+[Timelapse](https://lookout.hackclub.com/api/media/de68fa0e-6094-4f59-ad1c-9d19e6d9fd88/video.mp4)
