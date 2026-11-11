@@ -16,7 +16,12 @@ Here are the images of my Schematic and PCB:
 
 ![PCB 3d Model](https://github.com/araschke001-commits/NeoPixel-Clock/blob/main/Images/PCB%203d%20Model.png)
 
+## 3d Model
+I made a 3d model for the keycap needed to go onto the switch [here](https://github.com/araschke001-commits/NeoPixel-Clock/blob/main/3d%20Model/Keycap.step) and downloaded that and the assemblies into [this folder](https://github.com/araschke001-commits/NeoPixel-Clock/blob/main/3d%20Model).
+
 I also made an assembly of the PCB with the PCB, all of the components, and the standoffs in [Onshape](https://cad.onshape.com/documents/e89dcb76a46dc59ac115dc7b/w/4f57b6784dfbcd5bab5b00c5/e/a79ab988bd4d98dd8b5cdadd?renderMode=0&leftPanel=false&uiState=6af36fa614cb796759583b23).
+
+![Keycap](https://github.com/araschke001-commits/NeoPixel-Clock/blob/main/Images/Keycap.png)
 
 ![Full 3d Model](https://github.com/araschke001-commits/NeoPixel-Clock/blob/main/Images/Full%203d%20Model.png)
 
