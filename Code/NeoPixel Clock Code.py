@@ -15,6 +15,8 @@ WIFI_TIMEOUT = 30 # Seconds before wifi times out
 # Time (UTC_OFFSET excluded because it relies on a helper function) #
 SYNC_INTERVAL = 60 # Syncs time every minute
 lastSync = 0 # Timestamp of last sync
+lastWallSecond = None
+secondStartTicks = time.ticks_ms()
 
 # Switch #
 DEBOUNCE_MS = 25 # Ms to wait to read the button press to prevent incorrect reads
@@ -78,7 +80,22 @@ def wifiConnect(ssid, password, attempts=3):
                 # Wait to show message
                 time.sleep(1)
 
-                # If attempts are reached, show error and exit
+                # If attempts are reached, flag an error and exit
+                if attempt == attempts - 1:
+                    wifiFailed = True
+                    sys.exit(1)
+
+            except Exception as e:
+
+                print(f"Unknown error: {e}")
+
+                # Show that an unknown error occurred
+                centerText("Unknown\nError", 63, 31, True)
+
+                # Wait to show message
+                time.sleep(1)
+
+                # If attempts are reached, flag an error and exit
                 if attempt == attempts - 1:
                     wifiFailed = True
                     sys.exit(1)
@@ -94,11 +111,6 @@ def wifiConnect(ssid, password, attempts=3):
             finally:
                 if wifiFailed:
                     shutDown()
-
-
-# Set up wifi
-wlan = network.WLAN(network.STA_IF)
-wlan.active(True)
 
 
 ## DST Functions ##
@@ -136,9 +148,6 @@ def isDst(year, month, day, hour):
 
 ## Time ##
 
-# Sync from NTP
-ntptime.settime()
-
 # Gets the hour offset from UTC, in either CST or CDT, depending on daylight savings
 def getUtcOffset():
     utcTime = time.gmtime()
@@ -148,8 +157,6 @@ def getUtcOffset():
         return -5 # CDT
     else:
         return -6 # CST
-
-UTC_OFFSET = getUtcOffset()
 
 # Gets the local time based off of the UTC offset in the format (year, month, day, hour, minute, second, weekday, yearday)
 def getLocal():
@@ -171,8 +178,8 @@ def getTime():
     # Return current hour, minute, second
     return int(current[3]), int(current[4]), int(current[5])
 
-def timeReconnect():
-    global lastSync, SYNC_INTERVAL
+def timeConnect():
+    global lastSync, SYNC_INTERVAL, UTC_OFFSET
 
     timeFailed = False
     now = time.time()
@@ -181,12 +188,8 @@ def timeReconnect():
         for i in range(3):
             try:
                 ntptime.settime()
-                lastSync = now
 
-                # Update UTC_OFFSET
-                UTC_OFFSET = getUtcOffset()
-
-            except:
+            except Exception:
                 if i < 2:
                     print("Time reset failed, retrying...")
                     centerText("Time Reset\nFailed", 63, 31, True)
@@ -201,6 +204,11 @@ def timeReconnect():
                     sys.exit(1)
                     
             else:
+                lastSync = now
+
+                # Update UTC_OFFSET
+                UTC_OFFSET = getUtcOffset()
+                
                 break
 
             finally:
@@ -309,7 +317,7 @@ def showSafe():
 def makeTrail(index, length, rgb):
     rgbVals = rgb
 
-    for i in range(index - 1, index - (2 + length), -1):
+    for i in range(index - 1, index - (1 + length), -1):
         # Half all of the values in rgbVals
         rgbVals = (round(rgbVals[0]/1.5), round(rgbVals[1]/1.5), round(rgbVals[2]/1.5))
         
@@ -323,16 +331,13 @@ def centerText(text, x, y, clearScreen=False):
     if clearScreen:
         display.fill(0) # Clear screen
 
-    # Find length of longest line
-    length = 0
+    # Find how many rows there are
     rows = len(text.split("\n"))
-    for i in range(rows):
-        line = text.split("\n")[i]
-        
-        if len(line) > length:
-            length = len(line)
 
+    # Display each row individually, each centered horizontally and spaced evenly vertically
     for i in range(rows):
+        length = len(text.split("\n")[i])
+
         display.text(text.split("\n")[i], centerX(length, x), centerY(1, y + (i - (rows -1) / 2) * 10))
 
     display.show()
@@ -374,6 +379,12 @@ centerText("Screen\nInitiated", 63, 31, True)
 time.sleep_ms(500)
 
 
+## Initialize ##
+
+# Set up wifi
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+
 # Try to connect to wifi initially
 wifiConnect(ssid, password)
 
@@ -393,10 +404,18 @@ while True:
 
     ## Time ##
 
-    timeReconnect()
+    # Reconnect to the time if it has been too long since last reconnect
+    timeConnect()
 
     date = getDate()
     shortTime = getTime()
+
+    nowTicks = time.ticks_ms()
+    wallSecond = int(time.time())
+
+    if wallSecond != lastWallSecond:
+        lastWallSecond = wallSecond
+        secondStartTicks = nowTicks
 
 
     ## Switch ##
@@ -427,8 +446,8 @@ while True:
 
     # Mode 1 (out of 0-1): include fractions of a second (1/60) in a dim red color
     if mode == 1:
-        fraction = (time.ticks_ms() % 1000) / 1000.0 # Decimal for the #/60 fraction (not rounded yet)
-        fractionLed = int(fraction * 60) # Round the fraction into the clean number for the LED updated
+        fractionMs = time.ticks_diff(nowTicks, secondStartTicks) % 1000 # Decimal for the #/60 fraction (not rounded yet)
+        fractionLed = fractionMs * LED_NUM // 1000 # Round the fraction into the clean number for the LED updated
 
         # Set the correct pixel to a dim red
         setPixel(fractionLed, 25, 0, 0)
