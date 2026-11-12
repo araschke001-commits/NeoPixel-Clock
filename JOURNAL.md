@@ -10,7 +10,7 @@
 
 | Week | Tier | Hours logged | Entries |
 | --- | --- | --- | --- |
-| Week 5 | Tier 2 | 20.96h | 10 |
+| Week 5 | Tier 2 | 19.56h | 10 |
 
 ## Contents
 
@@ -127,7 +127,7 @@ Here are the images of my code:
 
 ### 2026-11-10: In this session, I continued to work on the code, making the actual Date and Time Test AND...
 
-**1.5h**
+**0.1h**
 
 In this session, I continued to work on the code, making the actual Date and Time Test AND...
 
