@@ -10,7 +10,7 @@
 
 | Week | Tier | Hours logged | Entries |
 | --- | --- | --- | --- |
-| Week 5 | Tier 2 | 19.56h | 10 |
+| Week 5 | Tier 2 | 18.16h | 10 |
 
 ## Contents
 
@@ -105,7 +105,7 @@ I moved the SuperMini to the bottom edge of the PCB because I realized that the 
 
 ### 2026-11-08: In this session, I made some test programs and made the setup code for the main program.
 
-**1.5h**
+**0.1h**
 
 In this session, I made some test programs and made the setup code for the main program.
 
