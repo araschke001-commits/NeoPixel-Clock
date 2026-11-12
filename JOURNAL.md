@@ -195,10 +195,24 @@ Here are images of my work:
 ![PCB](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/7081a8b64b45bd22047b7d48a74506a97e4dca7604bb689c707945b7cb1b9bc2.png)
 
 ## Code
-I first had to refactor the code to include the switch. I made a switch test program with a function to check the status of the switch, accounting for debouncing and copied that code into the main program.
+I first had to refactor the code to include the switch. I made a switch test program with a function to check the status of the switch, accounting for debouncing and copied that code into the main program. I also restructured the setup code slightly so the variables were all at the top rather than in the individual setup branches.
 
 Then I made the code for the trail of a dim red color for the fractions of a second (it goes around one time for each second), I made code to get the decimal for the fraction and then to convert that into which LED is supposed to light up. Then I set that LED and made the trail behind it. I also changed the values for the other LEDs, realizing that they were too bright before.
 
 After that, I made the code for the OLED to get the date and print it to the screen. This was fairly simple to get the date and print it out, centered on the screen, but I did have to figure out how to format it to the amount of digits (either 2 or 4 depending on which part it was).
 
-Once I finished that, I checked with AI to make sure everything would work properly in theory, and it's a good thing I did. I found numerous errors with almost everything. I had to clear and write the neopixels, move the initial wifi call, add the condition for the mode, change the hour led, add the UTC offset change code in the loop, and change the centerText function.
+Once I finished that, I checked with AI to make sure everything would work properly in theory, and it's a good thing I did. I found numerous errors with almost everything. I had to clear and write the neopixels, move the initial wifi call, add the condition for the mode, change the hour led, add the UTC offset change code in the loop, and change the centerText function. Even after that there were more bugs, mainly with the startup order. I eventually got them all figured out.
+
+I then updated the README to give a better code description, mainly on what the two different modes are.
+
+Here are some images of my updated code:
+
+![Screenshot from 2026-11-11 23-40-26](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/631ef8190b2f7856b36c3e1c4c829aabd16e4ef32d0899f19d8a85e788413ab3.png)
+
+![Screenshot from 2026-11-11 23-41-33](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/c79bfab491f98a3108a9841eec10ca1e079c8e34c5ec9641af3934e73c5ad588.png)
+
+![Screenshot from 2026-11-11 23-41-55](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/12c645d4d4da7e62013d9624cc7a3437d1370502c2ce6caeae292c16966886a2.png)
+
+![Screenshot from 2026-11-11 23-42-43](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/4e66dec77ac9ec5057c8b1b97a8ea8068474fb89f713e4eb1b2cf458f1994e07.png)
+
+![Screenshot from 2026-11-11 23-42-59](https://halflife.hackclub-assets.com/sessions/C7XTeoGu1WMIOvASw16iCwtNdoTXkQ5G/85e5f3e747b51d90f65ad72eda7dae1f9fd0dcbab398b3109e0bb53985da1aaf.png)
