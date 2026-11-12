@@ -3,8 +3,8 @@ from Modules import sh1106
 
 i2c = I2C(
     0,
-    sda=Pin(6),
-    scl=Pin(7),
+    sda=Pin(8),
+    scl=Pin(9),
     freq=400000
 )
 

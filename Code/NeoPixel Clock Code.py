@@ -4,6 +4,30 @@ import network, ntptime, time, neopixel, sys, colorsys
 
 ### Setup ###
 
+## Variables ##
+
+# Network #
+# CHANGE VALUES TO ACTUAL WIFI NAME AND PASSWORD
+ssid = "YOUR WIFI NAME"
+password = "YOUR WIFI PASSWORD"
+WIFI_TIMEOUT = 30 # Seconds before wifi times out
+
+# Time (UTC_OFFSET excluded because it relies on a helper function) #
+SYNC_INTERVAL = 60 # Syncs time every minute
+lastSync = 0 # Timestamp of last sync
+
+# Switch #
+DEBOUNCE_MS = 25 # Ms to wait to read the button press to prevent incorrect reads
+buttonState = 1 # If button is pressed or not. 0 means pressed, 1 means depressed
+lastChange = 0 # Timestamp for when the button changed last
+mode = 0 # The clock mode, int from 0-1, 0 shows h, m, s. 1 shows h, m, s, ms.
+
+# NeoPixels #
+LED_NUM = 60
+PIN_NUM = 0
+MAX_CURRENT_MA = 1200
+QUIESCENT_CURRENT_MA = LED_NUM * 1
+
 # Shuts everything down unless you choose to exclude something
 def shutDown(isWifi=True, isDisplay=True):
     # Turn off wifi fully if it exists
@@ -17,14 +41,6 @@ def shutDown(isWifi=True, isDisplay=True):
         display.poweroff()
 
 ## Network ##
-
-# Variables #
-
-# Wifi credentials
-# CHANGE VALUES TO ACTUAL WIFI NAME AND PASSWORD
-ssid = "YOUR WIFI NAME"
-password = "YOUR WIFI PASSWORD"
-WIFI_TIMEOUT = 30 # Seconds before wifi times out
 
 # Try to connect to wifi with credentials for an amount of attempts, retrying that amount before quitting
 def wifiConnect(ssid, password, attempts=3):
@@ -158,9 +174,6 @@ def getTime():
     # Return current hour, minute, second
     return current[3], current[4], current[5]
 
-SYNC_INTERVAL = 60 # Syncs time every minute
-lastSync = 0 # Timestamp of last sync
-
 def timeReconnect():
     global lastSync, SYNC_INTERVAL
 
@@ -195,13 +208,38 @@ def timeReconnect():
                     shutDown()
 
 
-## NeoPixels ##
+## Switch ##
 
-# Variables #
-LED_NUM = 60
-PIN_NUM = 0
-MAX_CURRENT_MA = 1200
-QUIESCENT_CURRENT_MA = LED_NUM * 1
+# Initialize #
+
+# Initialize button at pin 1 as input and pull up
+button = Pin(1, Pin.IN, Pin.PULL_UP)
+
+# Function(s) #
+
+# Returns True if the button is pressed and False otherwise, accounting for debouncing
+def checkButton():
+    global buttonState, lastChange
+
+    now = time.ticks_ms()
+    val = button.value()
+
+    # Check if time difference exceeds debouncing time
+    if time.ticks_diff(now, lastChange) >= DEBOUNCE_MS:
+
+        # Check if the button changed since last time
+        if val != buttonState:
+
+            lastChange = now
+            buttonState = val
+
+            if val == 0:
+                return True
+
+    return False
+
+
+## NeoPixels ##
 
 # Initialize LEDs
 leds = neopixel.NeoPixel(Pin(PIN_NUM), LED_NUM)
@@ -269,11 +307,11 @@ def showSafe():
 
 # Sets pixels just before specified led (going a certain length) in the color specified but dimmer
 def makeTrail(index, length, rgb):
-    
     rgbVals = rgb
+
     for i in range(index - 1, index - (2 + length), -1):
         # Half all of the values in rgbVals
-        rgbVals = (rgbVals[0]/2, rgbVals[1]/2, rgbVals[2]/2)
+        rgbVals = (round(rgbVals[0]/1.5), round(rgbVals[1]/1.5), round(rgbVals[2]/1.5))
         
         setPixel(i, rgbVals[0], rgbVals[1], rgbVals[2])
 
@@ -308,8 +346,8 @@ def centerY(rowNum, y):
 # Set up i2c
 i2c = I2C(
     0,
-    sda=Pin(9),
-    scl=Pin(7),
+    sda=Pin(8),
+    scl=Pin(9),
     freq=400000
 )
 
@@ -335,6 +373,10 @@ time.sleep_ms(500)
 ### Main Loop ###
 
 while True:
+
+    # The time at the start of the frame to be able to keep a steady fps
+    frameStart = time.ticks_ms()
+
     ## Network ##
 
     # Try to reconnect to wifi if disconnected
@@ -349,28 +391,49 @@ while True:
     shortTime = getTime()
 
 
+    ## Switch ##
+
+    # If the button is pressed, switch the mode 0 <-> 1
+    if checkButton() == True:
+        mode = (mode + 1) % 2
+
+
     ## NeoPixels ##
 
     # Display hour led in yellowish white
-    setPixel(shortTime[0], 150, 130, 101)
+    setPixel(shortTime[0], 85, 73, 56)
 
     # Display minute led in white
-    setPixel(shortTime[1], 150, 150, 150)
+    setPixel(shortTime[1], 75, 75, 75)
 
-    # Make a trail behind the minute led for 1 led in white
-    makeTrail(shortTime[1], 1, (150, 150, 150))
+    # Make a short trail behind the minute led for 1 led in white
+    makeTrail(shortTime[1], 1, (75, 75, 75))
 
     # Display second led in whitish blue
-    setPixel(shortTime[2], 130, 150, 170)
+    setPixel(shortTime[2], 65, 76, 87)
 
     # Make a trail behind the second led for 3 leds in whitish blue
-    makeTrail(shortTime[2], 3, (130, 150, 170))
+    makeTrail(shortTime[2], 3, (65, 76, 87))
 
-    # ***** TODO: Fix led placement on PCB, Make mode for ms, make OLED code *****
+    # Mode 1 (out of 0-1): include fractions of a second (1/60) in a dim red color
+    fraction = (time.ticks_ms() % 1000) / 1000.0 # Decimal for the #/60 fraction (not rounded yet)
+    fractionLed = int(fraction * 60) # Round the fraction into the clean number for the LED updated
+
+    # Set the correct pixel to a dim red
+    setPixel(fractionLed, 25, 0, 0)
+
+    # Make a longer trail out from the led in dim red for a length of 10
+    makeTrail(fractionLed, 10, (25, 0, 0))
+
+    # ***** TODO: Make OLED code, check that everything is correct *****
 
 
     ## OLED ##
 
     current = getTime()
 
-    time.sleep_ms(100)
+    # Loop 60 times a second for fraction leds, keeping it consistent
+    elapsed = time.ticks_diff(time.ticks_ms(), frameStart)
+
+    if elapsed < 17:
+        time.sleep_ms(17 - elapsed)
