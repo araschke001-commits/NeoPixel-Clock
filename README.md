@@ -30,6 +30,8 @@ I made the code for this project in MicroPython, which you'll need to flash to t
 
 I made some [test programs](https://github.com/araschke001-commits/NeoPixel-Clock/blob/main/Code/Test%20Programs) for this project and the [main program](https://github.com/araschke001-commits/NeoPixel-Clock/blob/main/Code/NeoPixel%20Clock%20Code.py). I had to download the [sh1106 module](https://github.com/araschke001-commits/NeoPixel-Clock/blob/main/Code/Modules/sh1106.py) for the OLED to work well.
 
+In the main program, there are two modes (mode 0 and mode 1). Mode 0 is the one with the hours, minutes, and seconds showing while mode 1 is the one with hours, minutes, seconds, and fractions of a second showing. The fractions of the second go by 1/60 to match with the amount of LED's there are.
+
 ## BOM
 This should be everything to make my project (or you can view the full BOM [here](https://github.com/araschke001-commits/NeoPixel-Clock/blob/main/BOM.csv)):
 
