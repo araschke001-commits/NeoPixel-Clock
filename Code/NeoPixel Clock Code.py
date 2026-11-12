@@ -100,9 +100,6 @@ def wifiConnect(ssid, password, attempts=3):
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 
-# Try to connect to wifi
-wifiConnect(ssid, password)
-
 
 ## DST Functions ##
 
@@ -162,9 +159,9 @@ def getLocal():
 # Gets the current date from the time module in the format (year, month, day)
 def getDate():
     timestamp = getLocal()
-    year = timestamp[0]
-    month = timestamp[1]
-    day = timestamp[2]
+    year = int(timestamp[0])
+    month = int(timestamp[1])
+    day = int(timestamp[2])
     return year, month, day
 
 # Gets the local time based off of the UTC offset with only the hour, minute, and second being returned
@@ -172,7 +169,7 @@ def getTime():
     current = getLocal()
 
     # Return current hour, minute, second
-    return current[3], current[4], current[5]
+    return int(current[3]), int(current[4]), int(current[5])
 
 def timeReconnect():
     global lastSync, SYNC_INTERVAL
@@ -185,6 +182,9 @@ def timeReconnect():
             try:
                 ntptime.settime()
                 lastSync = now
+
+                # Update UTC_OFFSET
+                UTC_OFFSET = getUtcOffset()
 
             except:
                 if i < 2:
@@ -332,8 +332,12 @@ def centerText(text, x, y, clearScreen=False):
         if len(line) > length:
             length = len(line)
 
-    display.text(text, centerX(length, x), centerY(rows, y))
+    for i in range(rows):
+        display.text(text.split("\n")[i], centerX(length, x), centerY(1, y + (i - (rows -1) / 2) * 10))
+
     display.show()
+
+    return None
 
 # Returns the x of the text centered at a point from the amount of letters
 def centerX(letterNum, x):
@@ -370,6 +374,10 @@ centerText("Screen\nInitiated", 63, 31, True)
 time.sleep_ms(500)
 
 
+# Try to connect to wifi initially
+wifiConnect(ssid, password)
+
+
 ### Main Loop ###
 
 while True:
@@ -400,35 +408,52 @@ while True:
 
     ## NeoPixels ##
 
+    # Clear all of the leds to start so the colors don't stay forever
+    target_buffer = [(0, 0, 0)] * LED_NUM
+
     # Display hour led in yellowish white
-    setPixel(shortTime[0], 85, 73, 56)
+    hourLed = int(((shortTime[0] % 12) * 5) + ((shortTime[1] / 60) * 5)) # Gets which led will light up based on a 12 hr clock face
+    setPixel(hourLed, 85, 73, 56)
 
     # Display minute led in white
     setPixel(shortTime[1], 75, 75, 75)
-
     # Make a short trail behind the minute led for 1 led in white
     makeTrail(shortTime[1], 1, (75, 75, 75))
 
     # Display second led in whitish blue
     setPixel(shortTime[2], 65, 76, 87)
-
     # Make a trail behind the second led for 3 leds in whitish blue
     makeTrail(shortTime[2], 3, (65, 76, 87))
 
     # Mode 1 (out of 0-1): include fractions of a second (1/60) in a dim red color
-    fraction = (time.ticks_ms() % 1000) / 1000.0 # Decimal for the #/60 fraction (not rounded yet)
-    fractionLed = int(fraction * 60) # Round the fraction into the clean number for the LED updated
+    if mode == 1:
+        fraction = (time.ticks_ms() % 1000) / 1000.0 # Decimal for the #/60 fraction (not rounded yet)
+        fractionLed = int(fraction * 60) # Round the fraction into the clean number for the LED updated
 
-    # Set the correct pixel to a dim red
-    setPixel(fractionLed, 25, 0, 0)
+        # Set the correct pixel to a dim red
+        setPixel(fractionLed, 25, 0, 0)
+        # Make a longer trail out from the led in dim red for a length of 9
+        makeTrail(fractionLed, 9, (25, 0, 0))
 
-    # Make a longer trail out from the led in dim red for a length of 10
-    makeTrail(fractionLed, 10, (25, 0, 0))
-
-    # ***** TODO: Make OLED code, check that everything is correct *****
+    # Write the changes to the LEDs while staying under max brightness
+    showSafe()
 
 
     ## OLED ##
+
+    # Get the date in format (year, month, day), all as integers
+    date = getDate()
+
+    # Components of date, formatted as strings with 2 (or 4) digits
+    year = str(date[0]).zfill(4)
+    month = str(date[1]).zfill(2)
+    day = str(date[2]).zfill(2)
+
+    # Display the date on the screen (MM/DD/YYYY), centered
+    centerText(f"{month}/{day}/{year}", 63, 31, True)
+
+
+    ## Calculate Delay ##
 
     current = getTime()
 
