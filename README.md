@@ -43,3 +43,6 @@ This should be everything to make my project (or you can view the full BOM [here
 - 1x 10V 680uF Electrolytic Capacitor
 - 1x 300pcs 1/4W 1% Resistor Pack
 - 4x M2x10mm Steel Standoffs
+
+## Reviewer Note
+I set the price to $0 for the 3d printed part because I don't know if it actually costs anything or not from my grant card since I think they changed it a few times. If it does cost something, please add enough money to my grant card to cover it (like $10 or something).
