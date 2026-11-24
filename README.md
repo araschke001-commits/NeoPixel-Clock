@@ -45,4 +45,4 @@ This should be everything to make my project (or you can view the full BOM [here
 - 4x M2x10mm Steel Standoffs
 
 ## Reviewer Note
-I set the price to $0 for the 3d printed part because I don't know if it actually costs anything or not from my grant card since I think they changed it a few times. If it does cost something, please add enough money to my grant card to cover it (like $10 or something).
+I set the price to $0 for the 3d printed part because I didn't know if it actually cost anything or not, but now I got a quote for the OLED stabilizer for $12. I haven't got one for the keycap yet, but I'm guessing an added $5. That makes the BOM go up in price by about $17.
