@@ -1,5 +1,5 @@
 # NeoPixel-Clock
-A NeoPixel clock that has NeoPixels around it to tell the time and an OLED display to show the current date, with a switch to change modes. It retrieves the date and time using the XIAO ESP32-C3 to get it using Wi-Fi. I will use MicroPython for the code.
+A NeoPixel clock that has NeoPixels around it to tell the time and an OLED display to show the current date, with a switch to change modes. It retrieves the date and time using the ESP32-C3 Supermini to get it using Wi-Fi. I will use MicroPython for the code.
 
 I made this so I could have a neat-looking clock to tell the time and the date.
 
